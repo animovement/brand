@@ -60,6 +60,21 @@ Poppins is vendored in `base/fonts/`, so a fresh checkout renders type without
 installing anything. Paths resolve from the repository root; set
 `ANIMOVEMENT_FONT_DIR` to override.
 
+## Using the marks
+
+Everything here is MIT licensed, so you are free to use and adapt it. The marks
+are also how people recognise animovement, so please:
+
+- use them to refer to animovement, not to identify something else
+- keep them unaltered — don't recolour, restretch, or rebuild them
+- don't imply endorsement by animovement or its authors
+
+If you need a variant that does not exist yet, open an issue rather than
+editing one by hand — that way everyone gets it.
+
+The vendored Poppins fonts are under the SIL Open Font License, not MIT; see
+`base/fonts/OFL.txt`.
+
 ## Details
 
 ### Provenance
