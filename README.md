@@ -41,6 +41,7 @@ and pixi resolves them on first run. Individual targets are available too:
 | task | output |
 | --- | --- |
 | `pixi run packages` | `out/packages/` — the seven package hexes |
+| `pixi run rainbow` | `out/packages/animovement.svg` — the metapackage hex |
 | `pixi run marks` | `out/marks/` — icon and square marks |
 | `pixi run og` | `out/og/` — OpenGraph cards at four haze levels |
 | `pixi run banner` | `out/banner/` — README banners at three sizes |
@@ -80,6 +81,7 @@ They run as modules, so invoke them from the repository root.
 
 ```
 pixi run python -m animovement_brand.gen_packages base/animovement-fixed.svg out/packages
+pixi run python -m animovement_brand.gen_rainbow  base/animovement-fixed.svg out/packages
 pixi run python -m animovement_brand.gen_marks  out/marks
 pixi run python -m animovement_brand.gen_og     out/og
 pixi run python -m animovement_brand.gen_banner out/banner
@@ -117,6 +119,13 @@ measures and corrects.
 **A linear haze ramp clamps.** Once pad + feather reaches the edge, increasing
 feather stops doing anything. `waves.gaussian_haze` feathers all the way out.
 
+**The metapackage has two chroma rules, not one.** `gen_rainbow.py` caps
+landscape chroma at C\* 62 and caps the wordmark gradient the same way, but
+leaves the border line uncapped so it stays brighter than the artwork it frames.
+It also applies the rainbow on top of the *deepteal-ramped* package hex rather
+than the raw base artwork, because that is the chain the shipped file came
+through; skipping that step shifts a few values by 1/255.
+
 **Booleans need closed, stroked-to-path shapes.** Inkscape's Intersection works
 on fill areas; open paths get implicitly closed with a straight segment.
 
@@ -135,18 +144,25 @@ $ pixi run verify ../animovement-website/assets/logos
   anicheck.svg               max   0   mean  0.0000
   anicore.svg                max   0   mean  0.0000
   animetric.svg              max   0   mean  0.0000
+  animovement.svg            max   0   mean  0.0000
   aniprocess.svg             max   0   mean  0.0000
   aniread.svg                max   0   mean  0.0000
   anispace.svg               max   0   mean  0.0000
   anivis.svg                 max   0   mean  0.0000
 
-7 compared, 14 unmatched, worst max diff 0, rendered at 512px
+8 compared, 14 unmatched, worst max diff 0, rendered at 512px
 ```
 
-All seven hexes are pixel-identical to what is shipped. The generated files are
-28 bytes larger as text — one gradient id is named `keyline` rather than
-`rbline`, and the wordmark carries an `inkscape:label` — but the path geometry
-is byte-identical and neither difference renders.
+Every package hex and the metapackage is pixel-identical to what is shipped.
+The generated files still differ slightly *as text*, and neither difference
+renders:
+
+* the seven package hexes are 28 bytes larger — one gradient id is named
+  `keyline` rather than `rbline`, and the wordmark carries an `inkscape:label`
+* `animovement.svg` is 13 bytes larger purely from XML serialisation: how
+  `ElementTree` spaces self-closing tags, plus one newline
+
+In both cases the path geometry is byte-identical.
 
 The 14 unmatched are the marks, OG cards and banners, which ship under
 different filenames elsewhere in the website repo; point `verify` at those
@@ -159,10 +175,10 @@ came from a different renderer and are not directly comparable to these.
 
 ## Not included
 
-**The metapackage hex.** `gen_packages.py` produces the seven package logos;
-`animovement.svg` is not among them and cannot currently be regenerated from
-anything in this repo. The shipped file lives on the website in
-`assets/logos/animovement.svg`. How it was produced was not recovered.
+Contact-sheet and comparison-image builders (throwaway PIL scripts), and the
+intermediate design explorations that were superseded: the hue-rotation
+palette, the fade/haze hex studies, the six border treatments, and the
+horizontal-wave marks. Their parameters are in the session transcript.
 
 The original raster-tracing pipeline (image segmentation, ridge tracking,
 gradient fitting) that produced `animovement-fixed.svg` from the source PNG.
