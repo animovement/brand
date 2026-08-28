@@ -3,7 +3,7 @@
 *Source of truth for the animovement artwork*
 
 The scripts that generate the package hexes, icon marks, OpenGraph card and
-README banner, plus the traced landscape they all derive from.
+README banner, plus the original artwork they all derive from.
 
 <p align="center">
   <img src="out/packages/anicore.svg"    height="96" alt="anicore" />
@@ -41,7 +41,7 @@ Nothing is published automatically. Copy `out/packages/` into each package's
 
 ```
 base/                    inputs, not generated
-  animovement-fixed.svg  the traced landscape everything derives from
+  animovement-fixed.svg  the original artwork everything derives from
   fonts/                 Poppins + OFL licence
 animovement_brand/       library modules and gen_* entry points
 out/                     generated artwork, committed so it can be linked
@@ -79,14 +79,8 @@ The vendored Poppins fonts are under the SIL Open Font License, not MIT; see
 
 ### Provenance
 
-**The scripts are a reconstruction.** The working container was reset and the
-originals were lost. They have been re-run and check out against the delivered
-artwork, but treat them as freshly written code. That loss is why they are
-versioned here.
-
-`base/animovement-fixed.svg` **cannot be regenerated.** It came from
-vector-tracing the original raster logo, and that pipeline was not recovered.
-Everything else can be rebuilt from it.
+`base/animovement-fixed.svg` is the original artwork, created by Mikkel
+Roald-Arbøl. Everything else here is generated from it.
 
 ### Colour rules
 
@@ -144,7 +138,3 @@ unmatched until `verify` is pointed at their directories.
 Contact-sheet and comparison-image builders, and the superseded design
 explorations: the hue-rotation palette, the fade/haze hex studies, the six
 border treatments, and the horizontal-wave marks.
-
-The raster-tracing pipeline behind `base/animovement-fixed.svg`. It is
-reconstructible from the session transcript, but the traced SVG exists, so it
-should not be needed.
