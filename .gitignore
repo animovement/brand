@@ -1,0 +1,7 @@
+# Generated artwork — rebuild with the gen_* scripts
+out/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
