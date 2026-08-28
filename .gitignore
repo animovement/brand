@@ -1,7 +1,9 @@
-# Generated artwork — rebuild with the gen_* scripts
+# Generated artwork — rebuild with `pixi run all`
 out/
+
+# pixi (pixi.lock IS committed, for a reproducible environment)
+.pixi/
 
 # Python
 __pycache__/
 *.pyc
-.venv/

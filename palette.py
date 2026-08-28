@@ -23,7 +23,7 @@ CROSS = [("Magenta","#C969A1"),("Red","#CE4441"),("Orange","#EB7926"),
          ("Deepteal","#004F63"),("Navy","#122451")]
 
 # the seven that carry a package identity (Orange retired)
-PACKAGES = [("aniframe","Jade"),("anicore","Jade"),("aniread","Sage"),
+PACKAGES = [("anicore","Jade"),("aniread","Sage"),
             ("aniprocess","Amber"),("animetric","Deepteal"),("anicheck","Red"),
             ("anivis","Magenta"),("anispace","Navy")]
 

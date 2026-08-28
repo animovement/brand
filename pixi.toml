@@ -1,0 +1,18 @@
+[workspace]
+name = "animovement-brand"
+description = "Generators for the animovement package hexes, marks, OG card and banner"
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "osx-64", "linux-64"]
+
+[dependencies]
+python = ">=3.11"
+numpy = "*"
+fonttools = "*"
+pillow = "*"
+
+[tasks]
+packages = { cmd = "python gen_packages.py base/animovement-fixed.svg out/packages", description = "Package hexes" }
+marks    = { cmd = "python gen_marks.py out/marks",   description = "Icon marks" }
+og       = { cmd = "python gen_og.py out/og",         description = "OpenGraph card" }
+banner   = { cmd = "python gen_banner.py out/banner", description = "README banner" }
+all      = { depends-on = ["packages", "marks", "og", "banner"], description = "Regenerate every asset" }

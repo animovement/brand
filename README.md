@@ -29,22 +29,33 @@ repo can be rebuilt from it.
 
 ## Setup
 
-Python 3 with `numpy`, `fonttools` and `Pillow`:
+Everything runs through [pixi](https://pixi.sh) — no manual environment steps:
 
 ```
-python3 -m venv .venv && . .venv/bin/activate
-pip install numpy fonttools Pillow
+pixi run all
 ```
 
-Poppins is **not vendored yet**. It is OFL-licensed and redistributable, so it
-can be committed here: drop `Poppins-Light.ttf`, `Poppins-Regular.ttf` and
-`Poppins-Medium.ttf` into `base/fonts/`. Alternatively point
-`ANIMOVEMENT_FONT_DIR` at a directory that has them. Until then the generators
-raise a `FileNotFoundError` naming the missing file. The original build read
-them from `/usr/share/fonts/truetype/google-fonts` inside a Linux container.
+`pixi.toml` pins `python`, `numpy`, `fonttools` and `Pillow` from conda-forge,
+and pixi resolves them on first run. Individual targets are available too:
 
-`verify.py` additionally shells out to a renderer to rasterise SVGs for
-comparison.
+| task | output |
+| --- | --- |
+| `pixi run packages` | `out/packages/` — the seven package hexes |
+| `pixi run marks` | `out/marks/` — icon and square marks |
+| `pixi run og` | `out/og/` — OpenGraph cards at four haze levels |
+| `pixi run banner` | `out/banner/` — README banners at three sizes |
+| `pixi run all` | all of the above |
+
+Poppins Light, Regular and Medium are vendored in `base/fonts/` along with
+their OFL licence, so a fresh checkout renders type without installing
+anything. `typeset.py` resolves them relative to itself; set
+`ANIMOVEMENT_FONT_DIR` to override. The original build read them from
+`/usr/share/fonts/truetype/google-fonts` inside a Linux container.
+
+`verify.py` is the exception: it shells out to `wkhtmltoimage`, which is not in
+the pixi environment, and its reference paths pointed into that same container.
+It now reads `ANIMOVEMENT_REF_DIR` instead of a hardcoded path, but it needs a
+rasteriser installed before it will run.
 
 ## Modules
 
@@ -59,11 +70,13 @@ comparison.
 
 ## Generators
 
+The pixi tasks above wrap these; call them directly only to change arguments.
+
 ```
-python3 gen_packages.py base/animovement-fixed.svg out/packages
-python3 gen_marks.py    out/marks
-python3 gen_og.py       out/og
-python3 gen_banner.py   out/banner
+pixi run python gen_packages.py base/animovement-fixed.svg out/packages
+pixi run python gen_marks.py    out/marks
+pixi run python gen_og.py       out/og
+pixi run python gen_banner.py   out/banner
 ```
 
 `gen_packages.py` needs `base/animovement-fixed.svg` — the traced,
@@ -118,6 +131,11 @@ banner-s34.svg          max diff 4    (antialiasing only)
 ```
 
 ## Not included
+
+**The metapackage hex.** `gen_packages.py` produces the seven package logos;
+`animovement.svg` is not among them and cannot currently be regenerated from
+anything in this repo. The shipped file lives on the website in
+`assets/logos/animovement.svg`. How it was produced was not recovered.
 
 The original raster-tracing pipeline (image segmentation, ridge tracking,
 gradient fitting) that produced `animovement-fixed.svg` from the source PNG.
