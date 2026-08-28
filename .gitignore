@@ -1,6 +1,3 @@
-# Generated artwork — rebuild with `pixi run all`
-out/
-
 # pixi (pixi.lock IS committed, for a reproducible environment)
 .pixi/
 

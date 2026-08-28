@@ -1,9 +1,19 @@
-# animovement brand <img src="base/animovement-fixed.svg" align="right" height="139" alt="animovement logo" />
+# animovement brand <img src="out/packages/animovement.svg" align="right" height="139" alt="animovement hex logo" />
 
 *Source of truth for the animovement artwork*
 
 The scripts that generate the package hexes, icon marks, OpenGraph card and
 README banner, plus the traced landscape they all derive from.
+
+<p align="center">
+  <img src="out/packages/anicore.svg"    height="96" alt="anicore" />
+  <img src="out/packages/aniread.svg"    height="96" alt="aniread" />
+  <img src="out/packages/anicheck.svg"   height="96" alt="anicheck" />
+  <img src="out/packages/aniprocess.svg" height="96" alt="aniprocess" />
+  <img src="out/packages/animetric.svg"  height="96" alt="animetric" />
+  <img src="out/packages/anivis.svg"     height="96" alt="anivis" />
+  <img src="out/packages/anispace.svg"   height="96" alt="anispace" />
+</p>
 
 ## Usage
 
@@ -34,7 +44,7 @@ base/                    inputs, not generated
   animovement-fixed.svg  the traced landscape everything derives from
   fonts/                 Poppins + OFL licence
 animovement_brand/       library modules and gen_* entry points
-out/                     generated artwork (gitignored)
+out/                     generated artwork, committed so it can be linked
 ```
 
 | module | what it does |
