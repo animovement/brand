@@ -1,8 +1,8 @@
 """Non-hex marks: squares, circles and icons with vivid wave bands."""
 import os, sys
-from palette import HUES
-from waves import gradients, bands_h, bands_v, namespace
-from typeset import POPPINS_REG, POPPINS_MEDIUM, centred
+from .palette import HUES
+from .waves import gradients, bands_h, bands_v, namespace
+from .typeset import POPPINS_REG, POPPINS_MEDIUM, centred
 
 VIVID = dict(L0=74.0, L1=54.0)          # light at the top, deep at the foot
 

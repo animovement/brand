@@ -9,11 +9,13 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.pens.boundsPen import BoundsPen
 from fontTools.misc.transform import Transform
 
-# Poppins is resolved from base/fonts/ next to this file, so a checkout is
-# self-contained. Override with ANIMOVEMENT_FONT_DIR to point elsewhere; the
-# original build used /usr/share/fonts/truetype/google-fonts.
+# Poppins is vendored in base/fonts/ at the repository root (this file lives one
+# level down, in the package), so a checkout is self-contained. Override with
+# ANIMOVEMENT_FONT_DIR; the original build used
+# /usr/share/fonts/truetype/google-fonts inside a Linux container.
+_REPO_ROOT = pathlib.Path(__file__).resolve().parents[1]
 _FONT_DIR = pathlib.Path(
-    os.environ.get("ANIMOVEMENT_FONT_DIR", pathlib.Path(__file__).parent / "base" / "fonts")
+    os.environ.get("ANIMOVEMENT_FONT_DIR", _REPO_ROOT / "base" / "fonts")
 )
 
 POPPINS_LIGHT  = str(_FONT_DIR / "Poppins-Light.ttf")

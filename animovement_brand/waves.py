@@ -5,8 +5,8 @@ wavy leading edge and fill away from it, so each keeps real area. Two summed
 sines at different frequencies avoid the mechanical look of a single sine.
 """
 import numpy as np
-import fitcurve as fc
-from lab import vivid
+from . import fitcurve as fc
+from .lab import vivid
 
 def gradients(key, hues, L0, L1, horiz=False, n=5):
     out=[]

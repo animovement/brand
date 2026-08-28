@@ -48,35 +48,41 @@ and pixi resolves them on first run. Individual targets are available too:
 
 Poppins Light, Regular and Medium are vendored in `base/fonts/` along with
 their OFL licence, so a fresh checkout renders type without installing
-anything. `typeset.py` resolves them relative to itself; set
-`ANIMOVEMENT_FONT_DIR` to override. The original build read them from
+anything. Paths resolve from the repository root, so run tasks from there; set
+`ANIMOVEMENT_FONT_DIR` to point elsewhere. The original build read them from
 `/usr/share/fonts/truetype/google-fonts` inside a Linux container.
 
-`verify.py` is the exception: it shells out to `wkhtmltoimage`, which is not in
-the pixi environment, and its reference paths pointed into that same container.
-It now reads `ANIMOVEMENT_REF_DIR` instead of a hardcoded path, but it needs a
-rasteriser installed before it will run.
+## Layout
+
+```
+base/                    inputs that are not generated
+  animovement-fixed.svg  the traced landscape everything derives from
+  fonts/                 Poppins + OFL licence
+animovement_brand/       library modules and gen_* entry points
+out/                     generated artwork (gitignored)
+```
 
 ## Modules
 
 | file | what it does |
 |---|---|
-| `lab.py` | sRGB ↔ CIELAB ↔ LCh, **strict** gamut testing, `max_chroma`, `vivid`, WCAG `contrast` |
-| `fitcurve.py` | Schneider least-squares cubic Bézier fitting |
-| `typeset.py` | font → SVG outline paths (no `<text>`, so no font dependency) |
-| `palette.py` | MetBrewer Cross + substitutions, monochrome ramp builder |
-| `waves.py` | wave band generation, gaussian haze, id namespacing |
-| `geometry.py` | regular pointy-top hexagon, keyline border |
+| `animovement_brand/lab.py` | sRGB ↔ CIELAB ↔ LCh, **strict** gamut testing, `max_chroma`, `vivid`, WCAG `contrast` |
+| `animovement_brand/fitcurve.py` | Schneider least-squares cubic Bézier fitting |
+| `animovement_brand/typeset.py` | font → SVG outline paths (no `<text>`, so no font dependency) |
+| `animovement_brand/palette.py` | MetBrewer Cross + substitutions, monochrome ramp builder |
+| `animovement_brand/waves.py` | wave band generation, gaussian haze, id namespacing |
+| `animovement_brand/geometry.py` | regular pointy-top hexagon, keyline border |
 
 ## Generators
 
 The pixi tasks above wrap these; call them directly only to change arguments.
+They run as modules, so invoke them from the repository root.
 
 ```
-pixi run python gen_packages.py base/animovement-fixed.svg out/packages
-pixi run python gen_marks.py    out/marks
-pixi run python gen_og.py       out/og
-pixi run python gen_banner.py   out/banner
+pixi run python -m animovement_brand.gen_packages base/animovement-fixed.svg out/packages
+pixi run python -m animovement_brand.gen_marks  out/marks
+pixi run python -m animovement_brand.gen_og     out/og
+pixi run python -m animovement_brand.gen_banner out/banner
 ```
 
 `gen_packages.py` needs `base/animovement-fixed.svg` — the traced,
@@ -116,19 +122,40 @@ on fill areas; open paths get implicitly closed with a straight segment.
 
 ## Verification
 
-`verify.py` re-renders regenerated files against the shipped ones and reports
-the pixel difference. Current state:
+`pixi run verify <reference-dir>` rasterises every SVG under `out/` and the
+same-named file under the reference directory, and reports the pixel
+difference. Both sides go through the same renderer (cairosvg), so the numbers
+measure whether the *artwork* matches rather than whether two renderers agree.
+Files with no counterpart are listed, not skipped silently.
+
+Against the logos shipped on the website:
 
 ```
-anicore.svg             max diff 0    (packages, exact)
-aniread.svg             max diff 0
-anivis.svg              max diff 0
-anispace.svg            max diff 0
-icon-wave-v-a.svg       max diff 0    (marks, exact)
-square-wave-v-ani.svg   max diff 0
-og-v-haze50.svg         max diff 3    (antialiasing only)
-banner-s34.svg          max diff 4    (antialiasing only)
+$ pixi run verify ../animovement-website/assets/logos
+  anicheck.svg               max   0   mean  0.0000
+  anicore.svg                max   0   mean  0.0000
+  animetric.svg              max   0   mean  0.0000
+  aniprocess.svg             max   0   mean  0.0000
+  aniread.svg                max   0   mean  0.0000
+  anispace.svg               max   0   mean  0.0000
+  anivis.svg                 max   0   mean  0.0000
+
+7 compared, 14 unmatched, worst max diff 0, rendered at 512px
 ```
+
+All seven hexes are pixel-identical to what is shipped. The generated files are
+28 bytes larger as text — one gradient id is named `keyline` rather than
+`rbline`, and the wordmark carries an `inkscape:label` — but the path geometry
+is byte-identical and neither difference renders.
+
+The 14 unmatched are the marks, OG cards and banners, which ship under
+different filenames elsewhere in the website repo; point `verify` at those
+directories to check them.
+
+The original build rasterised via `wkhtmltoimage` against
+`/mnt/user-data/outputs` in a container that no longer exists, and recorded
+`max diff 3`/`4` on the OG card and banner as antialiasing noise. Those numbers
+came from a different renderer and are not directly comparable to these.
 
 ## Not included
 

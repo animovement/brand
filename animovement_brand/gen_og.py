@@ -1,7 +1,7 @@
 """1200 x 630 social cards: vertical waves under an even white haze."""
 import os, sys
-from palette import HUES
-from waves import gradients, bands_v, namespace
+from .palette import HUES
+from .waves import gradients, bands_v, namespace
 W,H = 1200.0, 630.0
 
 def radial_haze(gid, base):

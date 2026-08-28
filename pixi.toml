@@ -9,10 +9,12 @@ python = ">=3.11"
 numpy = "*"
 fonttools = "*"
 pillow = "*"
+cairosvg = "*"          # rasterises SVG for `verify`
 
 [tasks]
-packages = { cmd = "python gen_packages.py base/animovement-fixed.svg out/packages", description = "Package hexes" }
-marks    = { cmd = "python gen_marks.py out/marks",   description = "Icon marks" }
-og       = { cmd = "python gen_og.py out/og",         description = "OpenGraph card" }
-banner   = { cmd = "python gen_banner.py out/banner", description = "README banner" }
+packages = { cmd = "python -m animovement_brand.gen_packages base/animovement-fixed.svg out/packages", description = "Package hexes" }
+marks    = { cmd = "python -m animovement_brand.gen_marks  out/marks",  description = "Icon marks" }
+og       = { cmd = "python -m animovement_brand.gen_og     out/og",     description = "OpenGraph card" }
+banner   = { cmd = "python -m animovement_brand.gen_banner out/banner", description = "README banner" }
 all      = { depends-on = ["packages", "marks", "og", "banner"], description = "Regenerate every asset" }
+verify   = { cmd = "python -m animovement_brand.verify", depends-on = ["all"], description = "Diff regenerated artwork against a reference directory" }

@@ -5,11 +5,11 @@ Output: one hex per package, recoloured, with its own wordmark and keyline.
 """
 import sys, re, os
 import numpy as np
-from lab import parse, rgb2lab, lab2lch, vivid
-from palette import PACKAGES, HUE, BASE, ramp_fn
-from typeset import POPPINS_LIGHT, em_for, word
-from geometry import W, H, keyline_border
-from waves import namespace
+from .lab import parse, rgb2lab, lab2lch, vivid
+from .palette import PACKAGES, HUE, BASE, ramp_fn
+from .typeset import POPPINS_LIGHT, em_for, word
+from .geometry import W, H, keyline_border
+from .waves import namespace
 
 BASE_SVG = sys.argv[1] if len(sys.argv)>1 else "animovement-fixed.svg"
 OUTDIR   = sys.argv[2] if len(sys.argv)>2 else "out/packages"

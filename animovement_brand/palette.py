@@ -11,7 +11,7 @@ Why the substitutions:
                   evenly round the wheel (gap sd 3.6 degrees).
 """
 import numpy as np
-from lab import parse, rgb2lab, lab2lch, lab2rgb, lch2lab, hx, ingamut_strict, max_chroma
+from .lab import parse, rgb2lab, lab2lch, lab2rgb, lch2lab, hx, ingamut_strict, max_chroma
 
 CROSS_FULL = [("Magenta","#C969A1"),("Red","#CE4441"),("Salmon","#EE8577"),
               ("Orange","#EB7926"),("Amber","#FFBB44"),("Sage","#859B6C"),

@@ -1,9 +1,9 @@
 """1200 x 200 organisation banner: vertical waves, gaussian haze through the
 middle, wordmark as a window onto the unhazed bands."""
 import os, sys
-from palette import HUES
-from waves import gradients, bands_v, gaussian_haze, namespace
-from typeset import POPPINS_LIGHT, centred
+from .palette import HUES
+from .waves import gradients, bands_v, gaussian_haze, namespace
+from .typeset import POPPINS_LIGHT, centred
 W,H = 1200.0, 200.0
 
 def banner(txt="animovement", tw=560.0, sigma=0.34, peak=0.90,
